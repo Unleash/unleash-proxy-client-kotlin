@@ -231,4 +231,17 @@ class UnleashClientTest {
         assertThat(client.getVariant("featureToggle").payload).isNull()
         assertThat(client.getVariant("simpleToggle").payload!!.value).isInstanceOf(JsonObject::class.java)
     }
+
+    @Test
+    fun `Handles empty toggles list`() {
+        val webserver = MockWebServer()
+        webserver.enqueue(MockResponse().setBody("""
+            {
+                "toggles": []
+            }
+        """.trimIndent()))
+        val client = UnleashClient(config = UnleashConfig(url = webserver.url("").toString(), clientKey = "abc123", appName = "tests"))
+        assertThat(client.getVariant("variantToggle").name).isEqualToIgnoringCase("disabled")
+        assertThat(client.isEnabled("any.toggle")).isFalse
+    }
 }

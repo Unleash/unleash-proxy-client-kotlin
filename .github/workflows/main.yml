@@ -13,7 +13,9 @@ jobs:
         name: Checkout code
       - uses: burrunan/gradle-cache-action@v1
         name: Build and test
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         with:
           job-id: jdk8
-          arguments: build
+          arguments: build coveralls
           gradle-version: wrapper

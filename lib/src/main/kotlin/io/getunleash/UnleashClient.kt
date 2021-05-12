@@ -9,6 +9,7 @@ import okhttp3.Cache
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.nio.file.Files
 import java.time.Duration
 import kotlin.io.path.createTempDirectory
 
@@ -25,7 +26,7 @@ import kotlin.io.path.createTempDirectory
 class UnleashClient(private val config: UnleashConfig,
                     private val client: OkHttpClient = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
                         Cache(
-                            directory = createTempDirectory("unleash_toggles").toFile(),
+                            directory = Files.createTempDirectory("unleash_toggles").toFile(),
                             maxSize = 10L * 1024L * 1024L // Use 10 MB as max
                         )
                     ).build(),
