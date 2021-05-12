@@ -11,7 +11,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.nio.file.Files
 import java.time.Duration
-import kotlin.io.path.createTempDirectory
 
 /**
  * The UnleashClient is a client connected to the unleash-proxy.

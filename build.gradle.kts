@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
     signing
     jacoco
-    id("com.github.kt3k.coveralls").version("2.12.0")
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.12"
 }
 
 val tagVersion = System.getenv("GITHUB_REF")?.split('/')?.last()
