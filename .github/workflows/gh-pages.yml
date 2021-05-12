@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          path: unleash-proxy-client-kotlin
 
       - uses: actions/setup-java@v1
         with:
@@ -20,12 +18,9 @@ jobs:
 
       - name: Build docs
         run: ./gradlew dokkaHtml
-        working-directory: ./unleash-proxy-client-kotlin
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./unleash-proxy-client-kotlin/lib/build/dokka/html
-          keep_files: false
-          full_commit_message: Publish KDoc documentation
+          branch: gh-pages # The branch the action should deploy to.
+          folder: lib/build/dokka/html # The folder the action should deploy.
