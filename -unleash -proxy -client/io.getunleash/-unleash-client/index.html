@@ -37,18 +37,35 @@
                     <div>
                       <div class="title">
                         <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="-unleash-client.html">UnleashClient</a>(config: <a href="../-unleash-config/index.html">UnleashConfig</a>, client: <span data-unresolved-link="okhttp3/OkHttpClient///PointingToDeclaration/">OkHttpClient</span> = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
-                        Cache(
-                            directory = Files.createTempDirectory(&quot;unleash_toggles&quot;).toFile(),
-                            maxSize = 10L * 1024L * 1024L // Use 10 MB as max
-                        )
-                    ).build(), ticker: <span data-unresolved-link="com.github.benmanes.caffeine.cache/Ticker///PointingToDeclaration/">Ticker</span> = Ticker.systemTicker())<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Creates a new client, sets up the background polling</div></div></div>
+        Cache(
+            directory = Files.createTempDirectory(&quot;unleash_toggles&quot;).toFile(),
+            maxSize = 10L * 1024L * 1024L // Use 10 MB as max
+        )
+    ).build(), ticker: <span data-unresolved-link="com.github.benmanes.caffeine.cache/Ticker///PointingToDeclaration/">Ticker</span> = Ticker.systemTicker())<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief ">Creates a new client, sets up the background polling</div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="1367244655%2FFunctions%2F1440829338" anchor-label="getVariant" id="1367244655%2FFunctions%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>
+              <div class="table" data-togglable="Functions"><a data-name="1252302283%2FFunctions%2F1440829338" anchor-label="getContext" id="1252302283%2FFunctions%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="get-context.html">getContext</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1252302283%2FFunctions%2F1440829338"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="get-context.html">getContext</a>(): <a href="../-unleash-context/index.html">UnleashContext</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1252302283%2FFunctions%2F1440829338" anchor-label="getContext" id="1252302283%2FFunctions%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1252302283%2FFunctions%2F1440829338" anchor-label="getContext" id="1252302283%2FFunctions%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>Gets current context to simplify <a href="update-context.html">updateContext</a> Allows<div class="sample-container"><code class="" theme="idea"><pre>val currentContext = unleash.getContext()<br>val newCtx = currentContext.copy(userId = newUserId)<br>unleash.updateContext(newCtx)</pre></code></div></div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1367244655%2FFunctions%2F1440829338" anchor-label="getVariant" id="1367244655%2FFunctions%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
                     <div class=""><span class="inline-flex"><a href="get-variant.html">getVariant</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1367244655%2FFunctions%2F1440829338"></span>
@@ -135,10 +152,10 @@
                 </div>
               </div>
               <h2 class="">Sources</h2>
-              <div class="table" data-togglable="Sources"><a data-name="1219955707%2FSource%2F1440829338" anchor-label="https://github.com/Unleash/unleash-proxy-client-kotlin/tree/main//io/getunleash/UnleashClient.kt#L16" id="1219955707%2FSource%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>
+              <div class="table" data-togglable="Sources"><a data-name="1219955707%2FSource%2F1440829338" anchor-label="https://github.com/Unleash/unleash-proxy-client-kotlin/tree/main/lib/src/main/kotlin/io/getunleash/UnleashClient.kt#L16" id="1219955707%2FSource%2F1440829338" data-filterable-set=":lib:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="https://github.com/Unleash/unleash-proxy-client-kotlin/tree/main//io/getunleash/UnleashClient.kt#L16">jvm source</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1219955707%2FSource%2F1440829338"></span>
+                    <div class=""><span class="inline-flex"><a href="https://github.com/Unleash/unleash-proxy-client-kotlin/tree/main/lib/src/main/kotlin/io/getunleash/UnleashClient.kt#L16">jvm source</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1219955707%2FSource%2F1440829338"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div></div>

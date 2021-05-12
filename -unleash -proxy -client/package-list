@@ -15,6 +15,7 @@ $dokka.location:io.getunleash/Toggle/name/#/PointingToDeclaration/-unleash -pro
 $dokka.location:io.getunleash/Toggle/variant/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/variant.html
 $dokka.location:io.getunleash/UnleashClient///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/index.html
 $dokka.location:io.getunleash/UnleashClient/UnleashClient/#io.getunleash.UnleashConfig#okhttp3.OkHttpClient#com.github.benmanes.caffeine.cache.Ticker/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/-unleash-client.html
+$dokka.location:io.getunleash/UnleashClient/getContext/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/get-context.html
 $dokka.location:io.getunleash/UnleashClient/getVariant/#kotlin.String/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/get-variant.html
 $dokka.location:io.getunleash/UnleashClient/isEnabled/#kotlin.String/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/is-enabled.html
 $dokka.location:io.getunleash/UnleashClient/start/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/start.html
