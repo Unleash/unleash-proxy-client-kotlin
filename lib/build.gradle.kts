@@ -41,6 +41,12 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showStackTraces = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        events("passed", "skipped", "failed")
+    }
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
@@ -59,7 +65,7 @@ tasks.withType<DokkaTask>().configureEach {
             moduleName.set("Unleash Proxy Client")
             sourceLink {
                 localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL("https://github.com/Unleash/unleash-proxy-client-kotlin/tree/${tagVersion ?: "main"}/"))
+                remoteUrl.set(URL("https://github.com/Unleash/unleash-proxy-client-kotlin/tree/${tagVersion ?: "main"}/lib/src/main/kotlin"))
                 remoteLineSuffix.set("#L")
             }
         }

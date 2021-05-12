@@ -3,6 +3,7 @@ package io.getunleash
 import kotlinx.serialization.Serializable
 
 /**
+ * Json response for a variant see [Variants](https://docs.getunleash.io/docs/advanced/toggle_variants)
  * @property name
  * @property payload
  */

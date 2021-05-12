@@ -244,4 +244,26 @@ class UnleashClientTest {
         assertThat(client.getVariant("variantToggle").name).isEqualToIgnoringCase("disabled")
         assertThat(client.isEnabled("any.toggle")).isFalse
     }
+
+    @Test
+    fun canGetCurrentConfig() {
+        val webserver = MockWebServer()
+        webserver.enqueue(MockResponse().setBody("""
+            {
+                "toggles": []
+            }
+        """.trimIndent()))
+        webserver.enqueue(MockResponse().setBody("""
+            {
+                "toggles": []
+            }
+        """.trimIndent()))
+        val client = UnleashClient(config = UnleashConfig(url = webserver.url("").toString(), clientKey = "abc123", appName = "tests"))
+        client.isEnabled("some.toggle")
+        val ctx = client.getContext()
+        val updated = ctx.copy(userId = "somenewuserid")
+        assertThat(ctx).isNotEqualTo(updated)
+        client.updateContext(updated)
+        assertThat(webserver.requestCount).isEqualTo(2)
+    }
 }

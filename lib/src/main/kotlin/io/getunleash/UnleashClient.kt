@@ -23,18 +23,20 @@ import kotlin.io.path.createTempDirectory
  * @property ticker - The ticker to use to decide how time should progress. Default to Ticker.systemTicker(). Overridable for tests
  * @constructor Creates a new client, sets up the background polling
  */
-class UnleashClient(private val config: UnleashConfig,
-                    private val client: OkHttpClient = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
-                        Cache(
-                            directory = Files.createTempDirectory("unleash_toggles").toFile(),
-                            maxSize = 10L * 1024L * 1024L // Use 10 MB as max
-                        )
-                    ).build(),
-                    private val ticker: Ticker = Ticker.systemTicker()
-    ) {
+class UnleashClient(
+    private val config: UnleashConfig,
+    private val client: OkHttpClient = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
+        Cache(
+            directory = Files.createTempDirectory("unleash_toggles").toFile(),
+            maxSize = 10L * 1024L * 1024L // Use 10 MB as max
+        )
+    ).build(),
+    private val ticker: Ticker = Ticker.systemTicker()
+) {
     private val json: Json = Json
 
-    private var unleashContext: UnleashContext = UnleashContext(appName = config.appName, environment = config.environment)
+    private var unleashContext: UnleashContext =
+        UnleashContext(appName = config.appName, environment = config.environment)
 
     private val proxyUrl = config.url.toHttpUrl().newBuilder().addPathSegment("api").addPathSegment("proxy").build()
 
@@ -56,6 +58,7 @@ class UnleashClient(private val config: UnleashConfig,
                 val proxyResponse = json.decodeFromString<ProxyResponse>(res.body!!.string())
                 proxyResponse.toggles.groupBy { it.name }.mapValues { it.value.first() }
             }
+
         }
 
     /**
@@ -105,5 +108,19 @@ class UnleashClient(private val config: UnleashConfig,
      */
     fun stop(): Unit {
         // NOOP - caffeine cleans it self
+    }
+
+    /**
+     * Gets current context to simplify [updateContext]
+     * Allows
+     * ```
+     * val currentContext = unleash.getContext()
+     * val newCtx = currentContext.copy(userId = newUserId)
+     * unleash.updateContext(newCtx)
+     * ```
+     * @return current context
+     */
+    fun getContext(): UnleashContext {
+        return unleashContext
     }
 }
