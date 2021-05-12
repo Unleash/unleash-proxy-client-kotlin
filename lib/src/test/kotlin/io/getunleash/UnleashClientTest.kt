@@ -1,6 +1,8 @@
-package ai.getunleash
+package io.getunleash
 
 import com.google.common.testing.FakeTicker
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
@@ -181,10 +183,52 @@ class UnleashClientTest {
             }
         """.trimIndent()))
         val client = UnleashClient(config = UnleashConfig(url = webserver.url("").toString(), clientKey = "abc123", appName = "tests"))
-        assertThat(client.isEnabled("variantToggle")).isTrue()
+        assertThat(client.isEnabled("variantToggle")).isTrue
         assertThat(webserver.requestCount).isEqualTo(1)
         client.updateContext(UnleashContext("some_new_user"))
         assertThat(webserver.requestCount).isEqualTo(2)
-        assertThat(client.isEnabled("variantToggle")).isFalse()
+        assertThat(client.isEnabled("variantToggle")).isFalse
+    }
+
+    @Test
+    fun `Handles various payloads for variants`() {
+        val webserver = MockWebServer()
+        webserver.enqueue(MockResponse().setBody("""
+            {
+            	"toggles": [
+                    {
+                        "name": "variantToggle",
+                        "enabled": true,
+                        "variant": {
+                            "name": "green",
+                            "payload": {
+                                "type": "number",
+                                "value": 54
+                            }
+                        }
+                    }, {
+                        "name": "featureToggle",
+                        "enabled": true,
+                        "variant": {
+                            "name": "disabled"
+                        }
+                    }, {
+                        "name": "simpleToggle",
+                        "enabled": true
+                        "variant": {
+                            "name": "red",
+                            "payload": {
+                                "type": "json",
+                                "value": { "key": "value" }
+                            }
+                        }
+                    }
+                ]
+            }
+        """.trimIndent()))
+        val client = UnleashClient(config = UnleashConfig(url = webserver.url("").toString(), clientKey = "abc123", appName = "tests"))
+        assertThat(client.getVariant("variantToggle").payload!!.value).isEqualTo(JsonPrimitive(54))
+        assertThat(client.getVariant("featureToggle").payload).isNull()
+        assertThat(client.getVariant("simpleToggle").payload!!.value).isInstanceOf(JsonObject::class.java)
     }
 }

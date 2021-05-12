@@ -1,4 +1,4 @@
-package ai.getunleash
+package io.getunleash
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.LoadingCache
@@ -22,14 +22,14 @@ import kotlin.io.path.createTempDirectory
  * @property ticker - The ticker to use to decide how time should progress. Default to Ticker.systemTicker(). Overridable for tests
  * @constructor Creates a new client, sets up the background polling
  */
-class UnleashClient(val config: UnleashConfig,
-                    val client: OkHttpClient = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
+class UnleashClient(private val config: UnleashConfig,
+                    private val client: OkHttpClient = OkHttpClient.Builder().readTimeout(Duration.ofSeconds(2)).cache(
                         Cache(
                             directory = createTempDirectory("unleash_toggles").toFile(),
                             maxSize = 10L * 1024L * 1024L // Use 10 MB as max
                         )
                     ).build(),
-                    ticker: Ticker = Ticker.systemTicker()
+                    private val ticker: Ticker = Ticker.systemTicker()
     ) {
     private val json: Json = Json
 
@@ -93,11 +93,10 @@ class UnleashClient(val config: UnleashConfig,
 
     /**
      * - Will immediately do an HTTP get to the Unleash Proxy to fetch the latest toggle state
-     * - Will set up a background process to do new http fetches to the Unleash Proxy at the interval defined in refreshInterval.
-     * - If a background process is already running, this is a no-op
+     *   though we will obey cache headers
      */
     fun start(): Unit {
-        contexts.get(unleashContext)
+        contexts.refresh(unleashContext)
     }
 
     /**

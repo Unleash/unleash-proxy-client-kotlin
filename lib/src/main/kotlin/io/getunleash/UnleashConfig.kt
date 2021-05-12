@@ -1,4 +1,4 @@
-package ai.getunleash
+package io.getunleash
 
 /**
  * Represents configuration for Unleash.

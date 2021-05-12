@@ -1,0 +1,31 @@
+name: gh-pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: unleash-proxy-client-kotlin
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Build docs
+        run: ./gradlew dokkaHtml
+        working-directory: ./unleash-proxy-client-kotlin
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./unleash-proxy-client-kotlin/lib/build/dokka/html
+          keep_files: true
+          full_commit_message: Publish KDoc documentation

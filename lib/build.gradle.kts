@@ -6,10 +6,12 @@ plugins {
     kotlin("plugin.serialization") version "1.5.0"
     id("org.jetbrains.dokka") version "1.4.32"
     `java-library`
+    `maven-publish`
+    signing
 }
 
 val tagVersion = System.getenv("GITHUB_REF")?.split('/')?.last()
-val myGroup = "ai.getunleash"
+val groupId = "io.getunleash"
 version = tagVersion?.trimStart('v') ?: "WIP"
 
 repositories {
