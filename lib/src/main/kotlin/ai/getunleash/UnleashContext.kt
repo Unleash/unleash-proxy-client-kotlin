@@ -1,10 +1,10 @@
 package ai.getunleash
 
 data class UnleashContext(
-    val userId: String,
-    val sessionId: String,
-    val remoteAddress: String,
-    val properties: Map<String, String>,
-    val appName: String,
-    val environment: String
+    val userId: String? = null,
+    val sessionId: String? = null,
+    val remoteAddress: String? = null,
+    val properties: Map<String, String> = emptyMap(),
+    val appName: String? = null,
+    val environment: String? = null
 )
