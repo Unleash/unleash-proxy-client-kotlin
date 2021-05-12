@@ -8,8 +8,9 @@
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.4.32"
+    kotlin("jvm") version "1.5.0"
+    kotlin("plugin.serialization") version "1.2.0"
+    id("org.jetbrains.dokka") version "1.5.0"
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
