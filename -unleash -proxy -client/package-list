@@ -1,0 +1,44 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:io.getunleash////PointingToDeclaration/-unleash -proxy -client/io.getunleash/index.html
+$dokka.location:io.getunleash/Payload///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-payload/index.html
+$dokka.location:io.getunleash/Payload/Payload/#kotlin.String#kotlinx.serialization.json.JsonElement/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-payload/-payload.html
+$dokka.location:io.getunleash/Payload/type/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-payload/type.html
+$dokka.location:io.getunleash/Payload/value/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-payload/value.html
+$dokka.location:io.getunleash/ProxyResponse///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-proxy-response/index.html
+$dokka.location:io.getunleash/ProxyResponse/ProxyResponse/#kotlin.collections.List[io.getunleash.Toggle]/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-proxy-response/-proxy-response.html
+$dokka.location:io.getunleash/ProxyResponse/toggles/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-proxy-response/toggles.html
+$dokka.location:io.getunleash/Toggle///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/index.html
+$dokka.location:io.getunleash/Toggle/Toggle/#kotlin.String#kotlin.Boolean#io.getunleash.Variant/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/-toggle.html
+$dokka.location:io.getunleash/Toggle/enabled/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/enabled.html
+$dokka.location:io.getunleash/Toggle/name/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/name.html
+$dokka.location:io.getunleash/Toggle/variant/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-toggle/variant.html
+$dokka.location:io.getunleash/UnleashClient///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/index.html
+$dokka.location:io.getunleash/UnleashClient/UnleashClient/#io.getunleash.UnleashConfig#okhttp3.OkHttpClient#com.github.benmanes.caffeine.cache.Ticker/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/-unleash-client.html
+$dokka.location:io.getunleash/UnleashClient/getVariant/#kotlin.String/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/get-variant.html
+$dokka.location:io.getunleash/UnleashClient/isEnabled/#kotlin.String/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/is-enabled.html
+$dokka.location:io.getunleash/UnleashClient/start/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/start.html
+$dokka.location:io.getunleash/UnleashClient/stop/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/stop.html
+$dokka.location:io.getunleash/UnleashClient/updateContext/#io.getunleash.UnleashContext/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-client/update-context.html
+$dokka.location:io.getunleash/UnleashConfig///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/index.html
+$dokka.location:io.getunleash/UnleashConfig/UnleashConfig/#kotlin.String#kotlin.String#kotlin.String#kotlin.Int#kotlin.Int#kotlin.String/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/-unleash-config.html
+$dokka.location:io.getunleash/UnleashConfig/appName/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/app-name.html
+$dokka.location:io.getunleash/UnleashConfig/clientKey/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/client-key.html
+$dokka.location:io.getunleash/UnleashConfig/environment/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/environment.html
+$dokka.location:io.getunleash/UnleashConfig/metricsInterval/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/metrics-interval.html
+$dokka.location:io.getunleash/UnleashConfig/refreshInterval/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/refresh-interval.html
+$dokka.location:io.getunleash/UnleashConfig/url/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-config/url.html
+$dokka.location:io.getunleash/UnleashContext///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/index.html
+$dokka.location:io.getunleash/UnleashContext/UnleashContext/#kotlin.String?#kotlin.String?#kotlin.String?#kotlin.collections.Map[kotlin.String,kotlin.String]#kotlin.String?#kotlin.String?/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/-unleash-context.html
+$dokka.location:io.getunleash/UnleashContext/appName/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/app-name.html
+$dokka.location:io.getunleash/UnleashContext/environment/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/environment.html
+$dokka.location:io.getunleash/UnleashContext/properties/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/properties.html
+$dokka.location:io.getunleash/UnleashContext/remoteAddress/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/remote-address.html
+$dokka.location:io.getunleash/UnleashContext/sessionId/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/session-id.html
+$dokka.location:io.getunleash/UnleashContext/userId/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-unleash-context/user-id.html
+$dokka.location:io.getunleash/Variant///PointingToDeclaration/-unleash -proxy -client/io.getunleash/-variant/index.html
+$dokka.location:io.getunleash/Variant/Variant/#kotlin.String#io.getunleash.Payload?/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-variant/-variant.html
+$dokka.location:io.getunleash/Variant/name/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-variant/name.html
+$dokka.location:io.getunleash/Variant/payload/#/PointingToDeclaration/-unleash -proxy -client/io.getunleash/-variant/payload.html
+io.getunleash
+
