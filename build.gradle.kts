@@ -65,7 +65,7 @@ tasks.withType<DokkaTask>().configureEach {
             moduleName.set("Unleash Proxy Client")
             sourceLink {
                 localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL("https://github.com/Unleash/unleash-proxy-client-kotlin/tree/${tagVersion ?: "main"}/lib/src/main/kotlin"))
+                remoteUrl.set(URL("https://github.com/Unleash/unleash-proxy-client-kotlin/tree/${tagVersion ?: "main"}/src/main/kotlin"))
                 remoteLineSuffix.set("#L")
             }
         }
