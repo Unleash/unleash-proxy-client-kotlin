@@ -89,8 +89,10 @@ publishing {
                 description.set("An Unleash Proxy Client for use when you don't want to evaluate toggles in memory")
                 url.set("https://docs.getunleash.io/unleash-proxy-client-kotlin/index.html")
                 licenses {
-                    name.set("The Apache License, Version 2.0")
-                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
                 }
                 developers {
                     developer {
