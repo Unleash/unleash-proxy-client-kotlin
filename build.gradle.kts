@@ -10,11 +10,12 @@ plugins {
     signing
     jacoco
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.12"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("net.researchgate.release").version("2.8.1")
 }
 
 val tagVersion = System.getenv("GITHUB_REF")?.split('/')?.last()
 val groupId = "io.getunleash"
-version = tagVersion?.trimStart('v') ?: "WIP"
 
 repositories {
     mavenCentral()
@@ -72,3 +73,54 @@ tasks.withType<DokkaTask>().configureEach {
     }
 }
 
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["kotlin"])
+            groupId = "io.getunleash"
+            artifactId = "unleash-proxy-client-kotlin"
+            version = "${version}"
+            pom {
+                name.set("Unleash Proxy Client")
+                description.set("An Unleash Proxy Client for use when you don't want to evaluate toggles in memory")
+                url.set("https://docs.getunleash.io/unleash-proxy-client-kotlin/index.html")
+                licenses {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+                developers {
+                    developer {
+                        id.set("chrkolst")
+                        name.set("Christopher Kolstad")
+                        email.set("chriswk@getunleash.ai")
+                    }
+                    developer {
+                        id.set("ivarconr")
+                        name.set("Ivar Conradi Østhus")
+                        email.set("ivarconr@getunleash.ai")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:https://github.com/Unleash/unleash-proxy-client-kotlin")
+                    developerConnection.set("scm:git:ssh://git@github.com:Unleash/unleash-proxy-client-kotlin")
+                    url.set("https://github.com/Unleash/unleash-proxy-client-kotlin")
+                }
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications["mavenJava"])
+}

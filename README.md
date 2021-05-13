@@ -69,3 +69,36 @@ val el: JsonElement = variant.payload.value
 val ctx = unleash.getContext().copy(userId = newUserId)
 unleash.updateContext(ctx)
 ```
+
+
+## Developing
+
+### Build
+Run 
+```bash
+./gradlew build
+```
+
+### Releasing
+- Make sure all files are committed
+- Run `./gradlew release`
+- Answer prompts
+
+### Publishing to maven central
+
+#### Sonatype username/password - use api token instead
+* Read [Api/auth token](https://blog.solidsoft.pl/2015/09/08/deploy-to-maven-central-using-api-key-aka-auth-token)
+* Set sonatype username
+  - Set `sonatypeUsername` in your `~/.gradle/gradle.properties`
+* Set sonatype password to the api key
+  - Set `sonatypePassword` in your `~/.gradle/gradle.properties`
+* Set signing key
+  - We're using gpg-agent command to sign, so you'll need to set two properties in your `~/.gradle/gradle.properties`
+        - `signing.gnupg.keyName` - Get it from `gpg -K`
+        - `signing.gnupg.passphrase` - The passphrase from your key you just fetched from `gpg -K`
+* Checkout the tag you're going to upload
+* Run publish task
+    `./gradlew publishToSonatype`
+```bash
+./gradlew 
+```
