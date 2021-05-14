@@ -73,7 +73,11 @@ tasks.withType<DokkaTask>().configureEach {
     }
 }
 
-
+release {
+    git {
+        requireBranch.set("main")
+    }
+}
 java {
     withSourcesJar()
     withJavadocJar()
