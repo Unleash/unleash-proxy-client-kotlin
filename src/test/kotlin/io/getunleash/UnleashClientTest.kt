@@ -1,6 +1,5 @@
 package io.getunleash
 
-import com.google.common.testing.FakeTicker
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -8,7 +7,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.util.concurrent.TimeUnit
 
 class UnleashClientTest {
 
@@ -84,7 +82,6 @@ class UnleashClientTest {
             )
         )
         client.isEnabled("my.feature")
-        assertThat(webserver.requestCount).isEqualTo(1)
         client.isEnabled("my.feature")
         client.isEnabled("my.feature")
         client.isEnabled("my.feature")
@@ -104,7 +101,7 @@ class UnleashClientTest {
         )
         client.isEnabled("my.feature")
         val request = webserver.takeRequest()
-        assertThat(request.path).startsWith("/api/proxy")
+        assertThat(request.path).contains("appName=tests")
         assertThat(request.headers["Authorization"]).isEqualTo("abc123")
     }
 
@@ -116,18 +113,15 @@ class UnleashClientTest {
             MockResponse().setBody(threeToggles).addHeader("Cache-Control", "private, must-revalidate")
                 .addHeader("ETag", etag)
         )
-        val fakeTicker = FakeTicker()
         val client = UnleashClient(
             config = UnleashConfig(
                 url = webserver.url("").toString(),
                 clientKey = "abc123",
                 appName = "tests"
-            ), ticker = fakeTicker::read
+            ),
         )
         client.isEnabled("my.feature")
         webserver.takeRequest()
-        fakeTicker.advance(31, TimeUnit.SECONDS)
-        client.isEnabled("my.feature")
         val cache = webserver.takeRequest()
         assertThat(cache.getHeader("If-None-Match")).isEqualTo(etag)
     }
@@ -142,9 +136,11 @@ class UnleashClientTest {
             config = UnleashConfig(
                 url = webserver.url("").toString(),
                 clientKey = "abc123",
-                appName = "tests"
+                appName = "tests",
+                refreshInterval = 3000
             )
         )
+        client.info = System.out::println
         assertThat(client.isEnabled("variantToggle")).isTrue
         assertThat(webserver.requestCount).isEqualTo(1)
         client.updateContext(UnleashContext("some_new_user"))
@@ -166,6 +162,8 @@ class UnleashClientTest {
         assertThat(client.getVariant("variantToggle").payload!!.value).isEqualTo(JsonPrimitive(54))
         assertThat(client.getVariant("featureToggle").payload).isNull()
         assertThat(client.getVariant("simpleToggle").payload!!.value).isInstanceOf(JsonObject::class.java)
+        client.stop()
+
     }
 
     @Test
@@ -240,16 +238,15 @@ class UnleashClientTest {
         """.trimIndent()
             )
         )
-        val fakeTicker = FakeTicker()
         val client = UnleashClient(
             config = UnleashConfig(
                 url = webserver.url("").toString(),
                 clientKey = "abc123",
                 appName = "tests"
-            ), ticker = fakeTicker::read
+            ),
         )
         val firstVariant = client.getVariant("featureToggle")
-        fakeTicker.advance(45L, TimeUnit.SECONDS)
+        client.fetchToggles()
         val variant = client.getVariant("featureToggle")
         assertThat(variant).isEqualTo(firstVariant)
     }

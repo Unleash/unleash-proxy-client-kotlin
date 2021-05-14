@@ -13,7 +13,7 @@ data class UnleashConfig(
     val url: String,
     val clientKey: String,
     val appName: String,
-    val refreshInterval: Int = 30,
-    val metricsInterval: Int = 30,
+    val refreshInterval: Long = 30,
+    val metricsInterval: Long = 30,
     val environment: String = "default"
 )

@@ -1,16 +1,19 @@
 package io.getunleash
 
-import com.github.benmanes.caffeine.cache.Caffeine
-import com.github.benmanes.caffeine.cache.LoadingCache
-import com.github.benmanes.caffeine.cache.Ticker
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 import java.nio.file.Files
 import java.time.Duration
+import kotlin.concurrent.fixedRateTimer
 
 /**
  * The UnleashClient is a client connected to the unleash-proxy.
@@ -19,7 +22,6 @@ import java.time.Duration
  * To avoid too many background threads and be able to share feature toggle cache, this should be used as a singleton.
  * @property config - Necessary configuration to instantiate the client
  * @property client - An OkHttpClient - Useful if your setup requires allowing less secure TLS protocols than default in OkHttp
- * @property ticker - The ticker to use to decide how time should progress. Default to Ticker.systemTicker(). Overridable for tests
  * @constructor Creates a new client, sets up the background polling
  */
 class UnleashClient(
@@ -30,35 +32,72 @@ class UnleashClient(
             maxSize = 10L * 1024L * 1024L // Use 10 MB as max
         )
     ).build(),
-    private val ticker: Ticker = Ticker.systemTicker()
 ) {
     private val json: Json = Json
+
+    var info: ((String) -> Unit)? = null
+    var error: ((String) -> Unit)? = null
 
     private var unleashContext: UnleashContext =
         UnleashContext(appName = config.appName, environment = config.environment)
 
-    private val proxyUrl = config.url.toHttpUrl().newBuilder().addPathSegment("api").addPathSegment("proxy").build()
+    private val proxyUrl = config.url.toHttpUrl()
 
-    private val contexts: LoadingCache<UnleashContext, Map<String, Toggle>> = Caffeine.newBuilder()
-        .refreshAfterWrite(Duration.ofSeconds(config.refreshInterval.toLong()))
-        .maximumSize(200)
-        .ticker(ticker)
-        .build { ctx: UnleashContext ->
-            var contextUrl = proxyUrl.newBuilder().addQueryParameter("appName", ctx.appName)
-                .addQueryParameter("env", ctx.environment)
-                .addQueryParameter("userId", ctx.userId)
-                .addQueryParameter("remoteAddress", ctx.remoteAddress)
-                .addQueryParameter("sessionId", ctx.sessionId)
-            ctx.properties.entries.forEach {
-                contextUrl = contextUrl.addQueryParameter(it.key, it.value)
-            }
-            val request = Request.Builder().url(contextUrl.build()).header("Authorization", config.clientKey).build()
-            client.newCall(request).execute().use { res ->
-                val proxyResponse = json.decodeFromString<ProxyResponse>(res.body!!.string())
-                proxyResponse.toggles.groupBy { it.name }.mapValues { it.value.first() }
-            }
+    private var toggles: Map<String, Toggle> = emptyMap()
 
+    private var sync: java.util.Timer? = null
+
+    init {
+        fetchToggles()
+        setTimer()
+    }
+
+    private fun setTimer() {
+        sync = fixedRateTimer("unleash_sync_timer", initialDelay = config.refreshInterval, daemon = true, period = config.refreshInterval * 1000) {
+            fetchToggles()
         }
+    }
+
+    private fun buildContextUrl(ctx: UnleashContext): HttpUrl {
+        var contextUrl = proxyUrl.newBuilder().addQueryParameter("appName", ctx.appName)
+            .addQueryParameter("env", ctx.environment)
+            .addQueryParameter("userId", ctx.userId)
+            .addQueryParameter("remoteAddress", ctx.remoteAddress)
+            .addQueryParameter("sessionId", ctx.sessionId)
+        ctx.properties.entries.forEach {
+            contextUrl = contextUrl.addQueryParameter(it.key, it.value)
+        }
+        return contextUrl.build()
+    }
+
+    fun fetchToggles() {
+        val contextUrl = buildContextUrl(unleashContext)
+        val request = Request.Builder().url(contextUrl).header("Authorization", config.clientKey).build()
+        client.newCall(request).enqueue(object: Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                error?.let { it(e.message ?: "Failed to load") }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use { res ->
+                    if (res.isSuccessful) {
+                        res.body?.let { body ->
+                            try {
+                                val proxyResponse = json.decodeFromString<ProxyResponse>(body.string())
+                                info?.let { it("Refreshing toggles") }
+                                toggles = proxyResponse.toggles.groupBy { it.name }.mapValues { it.value.first() }
+                            } catch (e: Exception) {
+                                // If we fail to parse, just keep data
+                            }
+                        }
+                    } else {
+                        error?.let { it("Failed to fetch toggles, cowardly not doing anything") }
+                    }
+                }
+            }
+        })
+    }
 
     /**
      * Used to check whether a feature toggle is enabled or not.
@@ -68,7 +107,7 @@ class UnleashClient(
      * @return true if toggle is enabled, false if toggle is disabled or does not exist
      */
     fun isEnabled(name: String): Boolean {
-        return contexts.get(unleashContext)?.get(name)?.let { it.enabled } ?: false
+        return toggles[name]?.enabled ?: false
     }
 
     /**
@@ -79,7 +118,7 @@ class UnleashClient(
      * @return variant definition or default variant with name disabled if not found
      */
     fun getVariant(name: String): Variant {
-        return contexts.get(unleashContext)?.get(name)?.variant ?: Variant("disabled")
+        return toggles[name]?.variant ?: Variant("disabled")
     }
 
     /**
@@ -90,7 +129,7 @@ class UnleashClient(
     fun updateContext(context: UnleashContext): Unit {
         if (this.unleashContext != context) {
             this.unleashContext = context
-            contexts.get(context)
+            fetchToggles()
         }
     }
 
@@ -99,14 +138,15 @@ class UnleashClient(
      *   though we will obey cache headers
      */
     fun start(): Unit {
-        contexts.refresh(unleashContext)
+        sync?.cancel()
+        setTimer()
     }
 
     /**
      * Stops the background polling and cleans up resources used.
      */
     fun stop(): Unit {
-        // NOOP - caffeine cleans it self
+        sync?.cancel()
     }
 
     /**
