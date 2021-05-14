@@ -1,6 +1,7 @@
 # Unleash Proxy Client SDK for Kotlin
 [![Coverage Status](https://coveralls.io/repos/github/Unleash/unleash-proxy-client-kotlin/badge.svg?branch=main)](https://coveralls.io/github/Unleash/unleash-proxy-client-kotlin?branch=main)
 [![main](https://github.com/Unleash/unleash-proxy-client-kotlin/actions/workflows/main.yml/badge.svg)](https://github.com/Unleash/unleash-proxy-client-kotlin/actions/workflows/main.yml)
+[![latest](https://badgen.net/maven/v/maven-central/io.getunleash/unleash-proxy-client-kotlin)](https://search.maven.org/search?q=g:io.getunleash%20AND%20a:unleash-proxy-client-kotlin)
 
 This is the Unleash Proxy Client SDK for Kotlin. It is compatible with the unleash-proxy included in our enterprise offering. Though it is written in kotlin, it works seamlessly in Java projects as well
 
