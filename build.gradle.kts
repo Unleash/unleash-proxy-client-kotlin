@@ -11,7 +11,7 @@ plugins {
     jacoco
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.12"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("net.researchgate.release").version("2.8.1")
+    id("nebula.release") version "15.3.1"
 }
 
 val tagVersion = System.getenv("GITHUB_REF")?.split('/')?.last()
@@ -73,11 +73,6 @@ tasks.withType<DokkaTask>().configureEach {
     }
 }
 
-release {
-    git {
-        requireBranch.set("main")
-    }
-}
 java {
     withSourcesJar()
     withJavadocJar()

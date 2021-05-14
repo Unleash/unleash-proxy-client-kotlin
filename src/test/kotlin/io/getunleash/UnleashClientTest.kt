@@ -1,6 +1,7 @@
 package io.getunleash
 
 import com.google.common.testing.FakeTicker
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import okhttp3.mockwebserver.MockResponse
@@ -37,6 +38,7 @@ class UnleashClientTest {
                 ]
             }
     """.trimIndent()
+
 
     val complicatedVariants = """{
             	"toggles": [
@@ -134,7 +136,8 @@ class UnleashClientTest {
     fun `Updating context should fire off a new request`() {
         val webserver = MockWebServer()
         webserver.enqueue(MockResponse().setBody(threeToggles))
-        webserver.enqueue(MockResponse().setBody(threeToggles))
+        val toggle = Toggle("variantToggle", enabled = false)
+        webserver.enqueue(MockResponse().setBody(Json.encodeToString(ProxyResponse.serializer(), ProxyResponse(toggles = listOf(toggle)))))
         val client = UnleashClient(
             config = UnleashConfig(
                 url = webserver.url("").toString(),
