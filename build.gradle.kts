@@ -11,11 +11,13 @@ plugins {
     jacoco
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.12"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("nebula.release") version "15.3.1"
+    id("pl.allegro.tech.build.axion-release").version("1.13.2")
 }
 
 val tagVersion = System.getenv("GITHUB_REF")?.split('/')?.last()
 val groupId = "io.getunleash"
+
+project.version = scmVersion.version
 
 repositories {
     mavenCentral()
@@ -78,11 +80,15 @@ java {
     withJavadocJar()
 }
 
+val sonatypeUsername: String? by project
+val sonatypePassword: String? by project
+val group: String? by project
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            from(components["kotlin"])
-            groupId = "io.getunleash"
+            from(components["java"])
+            groupId = group
             artifactId = "unleash-proxy-client-kotlin"
             version = "${version}"
             pom {
@@ -115,9 +121,13 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            url = uri(layout.buildDirectory.dir("repo"))
+            name = "test"
+        }
+    }
 }
-val sonatypeUsername: String? by project
-val sonatypePassword: String? by project
 
 nexusPublishing {
     repositories {
