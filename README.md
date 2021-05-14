@@ -86,19 +86,20 @@ Run
 
 ### Publishing to maven central
 
-#### Sonatype username/password - use api token instead
-* Read [Api/auth token](https://blog.solidsoft.pl/2015/09/08/deploy-to-maven-central-using-api-key-aka-auth-token)
+#### Sonatype username/password
 * Set sonatype username
   - Set `sonatypeUsername` in your `~/.gradle/gradle.properties`
 * Set sonatype password to the api key
   - Set `sonatypePassword` in your `~/.gradle/gradle.properties`
+
+#### Setup gpg signing
 * Set signing key
   - We're using gpg-agent command to sign, so you'll need to set two properties in your `~/.gradle/gradle.properties`
         - `signing.gnupg.keyName` - Get it from `gpg -K`
         - `signing.gnupg.passphrase` - The passphrase from your key you just fetched from `gpg -K`
-* Checkout the tag you're going to upload
-* Run publish task
-    `./gradlew publishToSonatype`
+
+#### Publish 
+* Standing on tagged commit run
 ```bash
-./gradlew 
+./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository`
 ```

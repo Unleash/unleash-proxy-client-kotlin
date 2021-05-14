@@ -140,7 +140,6 @@ nexusPublishing {
     }
 }
 
-
 signing {
     useGpgCmd()
     sign(publishing.publications["mavenJava"])
